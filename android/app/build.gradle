@@ -75,6 +75,10 @@ android {
     compileSdk rootProject.ext.compileSdkVersion
 
     namespace "com.mydoctor"
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
     defaultConfig {
         applicationId "com.mydoctor"
         minSdkVersion rootProject.ext.minSdkVersion
