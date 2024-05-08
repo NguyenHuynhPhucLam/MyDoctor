@@ -2,29 +2,48 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const LoginScreen = () => {
+const SignUpScreen = () => {
   const navigation = useNavigation();
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showNotification, setShowNotification] = useState(false);
 
-  const handleLogin = () => {
-    // Logic to handle login
-    console.log('Logging in...');
-    navigation.navigate('HomeScreen');
-  };
-
-  const handleForgotPassword = () => {
-    // Logic to handle forgot password
-    console.log('Forgot password clicked...');
-  };
 
   const handleSignUp = () => {
-    navigation.navigate('SignUpScreen');
+    // Logic to handle sign up
+    console.log('Signing up...');
+    // Show notification for a short period before redirecting
+    setShowNotification(true);
+    setTimeout(() => {
+      setShowNotification(false);
+      navigation.navigate('Home');
+    }, 2000);
   };
+
+  const handleLogin = () => {
+    navigation.navigate('LoginScreen');
+  };
+  useEffect(() => {
+    if (showNotification) {
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 2000);
+    }
+  }, [showNotification]);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.logo}>Login</Text>
+      <Text style={styles.logo}>Sign Up</Text>
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.inputText}
+          placeholder="Name"
+          placeholderTextColor="#003f5c"
+          value={name}
+          onChangeText={(text) => setName(text)}
+        />
+      </View>
       <View style={styles.inputView}>
         <TextInput
           style={styles.inputText}
@@ -44,17 +63,20 @@ const LoginScreen = () => {
           onChangeText={(text) => setPassword(text)}
         />
       </View>
-      <TouchableOpacity onPress={handleForgotPassword}>
-        <Text style={styles.forgotPassword}>Forgot Password?</Text>
+      <TouchableOpacity style={styles.signupBtn} onPress={handleSignUp}>
+        <Text style={styles.signupText}>SIGN UP</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.loginBtn} onPress={handleLogin}>
-        <Text style={styles.loginText}>LOGIN</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleSignUp}>
-        <Text style={styles.signupText}>
-          New? Let's <Text style={styles.signupLink}>Sign up</Text>
+      <TouchableOpacity onPress={handleLogin}>
+        <Text style={styles.loginText}>
+          Already have an account? <Text style={styles.loginLink}>Login</Text>
         </Text>
       </TouchableOpacity>
+      
+      <Modal isVisible={showNotification}> 
+        <View style={styles.notificationContainer}>
+          <Text style={styles.notificationText}>Congrats! Sign-up Success!</Text>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -85,11 +107,7 @@ const styles = StyleSheet.create({
     height: 50,
     color: 'black',
   },
-  forgotPassword: {
-    color: '#003f5c',
-    fontSize: 12,
-  },
-  loginBtn: {
+  signupBtn: {
     width: '80%',
     backgroundColor: '#fb5b5a',
     borderRadius: 25,
@@ -99,18 +117,18 @@ const styles = StyleSheet.create({
     marginTop: 40,
     marginBottom: 10,
   },
-  loginText: {
+  signupText: {
     color: 'white',
   },
-  signupText: {
+  loginText: {
     marginTop: 15,
     fontSize: 16,
     color: '#003f5c',
   },
-  signupLink: {
+  loginLink: {
     fontWeight: 'bold',
     color: '#003f5c',
   },
 });
 
-export default LoginScreen;
+export default SignUpScreen;

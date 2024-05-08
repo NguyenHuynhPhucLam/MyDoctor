@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoginScreen from '../../screens/Login';
 
 const SplashScreen = () => {
+  const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
   const [showCarousel, setShowCarousel] = useState(false);
 
@@ -81,7 +83,9 @@ const GettingStartedCarousel = () => {
       />
       {currentIndex === carouselData.length - 1 && (
         <TouchableOpacity style={styles.loginButton}>
-          <Text style={styles.loginButtonText}>Login/Signup</Text>
+          <Text style={styles.loginButtonText} 
+          onPress={() => navigation.navigate('LoginScreen')}
+          >Login/Signup</Text>
         </TouchableOpacity>
       )}
     </View>
