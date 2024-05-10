@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, TextInput, StyleSheet, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const SignUpScreen = () => {

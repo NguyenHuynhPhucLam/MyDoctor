@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
+import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
+  const navigation = useNavigation();
     const SearchBar = () => {
         return (
           <View style={styles.searchBarContainer}>
@@ -17,6 +19,14 @@ const HomeScreen = () => {
           </View>
         );
       };
+    const handleDocList = () => {
+        // Logic to handle login
+        navigation.navigate('DocList');
+    };
+    const handleArticleList = () => {
+      // Logic to handle login
+      navigation.navigate('Articles');
+  };
   // Dummy data for top doctors and health articles
   const topDoctors = [
     { id: 1, name: 'Dr. John Doe', speciality: 'Cardiology', rating: 4.8 },
@@ -35,7 +45,7 @@ const HomeScreen = () => {
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Top Doctors</Text>
           <TouchableOpacity style={styles.seeAllButton}>
-            <Text style={styles.seeAllButtonText}>See All</Text>
+            <Text style={styles.seeAllButtonText} onPress={handleDocList}>See All</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.carouselContainer}>
@@ -50,26 +60,15 @@ const HomeScreen = () => {
     );
   };
 
-  const renderArticlesSection = () => {
-    return (
-      <View>
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Articles</Text>
-          <TouchableOpacity style={styles.seeAllButton}>
-            <Text style={styles.seeAllButtonText}>See All</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.articlesContainer}>
-          {topArticles.map((article) => (
-            <View key={article.id} style={styles.articleItem}>
-              <Text style={styles.articleTitle}>{article.title}</Text>
-              <Text style={styles.articleDate}>{article.date}</Text>
-            </View>
-          ))}
-        </View>
+  const renderArticleItem = (article) => (
+    <TouchableOpacity style={styles.articleCard} key={article.id}>
+      <Image source={article.image} style={styles.articleImage} />
+      <View style={styles.articleInfo}>
+        <Text style={styles.articleTitle}>{article.title}</Text>
+        <Text style={styles.articleAuthor}>By {article.author}</Text>
       </View>
-    );
-  };
+    </TouchableOpacity>
+  );
 
   // Render individual top doctor item
   const renderTopDoctorItem = ({ item }) => (
@@ -120,7 +119,15 @@ const HomeScreen = () => {
         />
       </View>
       {renderTopDoctorsSection()}
-      {renderArticlesSection()}
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Articles</Text>
+          <TouchableOpacity style={styles.seeAllButton}>
+            <Text style={styles.seeAllButtonText} onPress={handleArticleList}>See All</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.articleList}>
+        {topArticles.map(renderArticleItem)}
+      </View>
     </ScrollView>
   );
 };
@@ -210,6 +217,7 @@ const styles = {
     fontSize: 12,
   },
   sectionHeader: {
+    color: "black",
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -217,6 +225,7 @@ const styles = {
     marginTop: 16,
   },
   sectionTitle: {
+    color: "black",
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -227,19 +236,33 @@ const styles = {
     color: '#888',
     fontSize: 16,
   },
-  articlesContainer: {
+  articleList: {
+    paddingHorizontal: 18,
+  },
+  articleCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 8,
     padding: 16,
   },
-  articleItem: {
-    marginBottom: 16,
+  articleImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 8,
+  },
+  articleInfo: {
+    flex: 1,
+    marginLeft: 16,
   },
   articleTitle: {
     fontSize: 16,
     fontWeight: 'bold',
   },
-  articleDate: {
-    fontSize: 12,
-    color: '#777',
+  articleAuthor: {
+    marginTop: 4,
+    fontSize: 14,
   },
   searchBarContainer: {
     flexDirection: 'row',
