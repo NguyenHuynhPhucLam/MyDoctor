@@ -77,13 +77,13 @@ const App = () => {
       <Stack.Navigator screenOptions={{
     headerShown: false
   }}>
-        <Stack.Screen name="Main" component={TabNavigator}/>
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen
           name="LoginScreen"
           component={LoginScreen}
         />
         <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+        <Stack.Screen name="Main" component={TabNavigator}/>
         <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name="DocList" component={DoctorListScreen} />
         <Stack.Screen name="DocAppointer" component={DoctorDetailScreen} />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView, TextInput } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView, TextInput, Linking } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import { useNavigation } from '@react-navigation/native';
 
@@ -101,7 +101,9 @@ const HomeScreen = () => {
           <Image source={require('../../assets/icons/Hospital.png')} style={styles.buttonImage} />
           <Text style={styles.buttonText}>Hospital</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => {
+    Linking.openURL('tel:115');
+  }}>
           <Image source={require('../../assets/icons/Ambulance.png')} style={styles.buttonImage} />
           <Text style={styles.buttonText}>Ambulance</Text>
         </TouchableOpacity>
