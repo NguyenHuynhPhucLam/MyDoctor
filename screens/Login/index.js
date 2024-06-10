@@ -1,25 +1,60 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
 const LoginScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isReadyForLogin, setIsReadyForLogin] = useState(false);
 
-  const handleLogin = () => {
-    // Logic to handle login
-    console.log('Logging in...');
-    navigation.navigate('HomeScreen');
+  // Function to update isReadyForLogin state based on email and password
+  const updateIsReadyForLogin = (email, password) => {
+    setIsReadyForLogin(email.trim() !== '' && password.trim() !== '');
   };
 
+  const handleLogin = async () => {
+    try {
+      // Make a POST request to your API endpoint
+      const response = await axios.post('https://hidoc-be.onrender.com/api/login', {
+        email,
+        password, // Send the plain password to the server
+      });
+  
+      // Check if the login was successful
+      if (response.data.message === "OK") {
+        // Handle successful login response
+        console.log('Login successful:', response.data);
+        navigation.navigate('HomeScreen');
+      } else {
+        // Handle invalid login
+        if (response.data.message === "Your Email doesn't exist in our System") {
+          // Display a notification for invalid email
+          alert("Your Email doesn't exist in our System. Please check your email.");
+        } else {
+          // Display a generic error message
+          alert('Invalid login. Please try again.');
+        }
+      }
+    } catch (error) {
+      console.error('Login failed:', error);
+      // Handle other errors, e.g., display error message to the user
+      // For example:
+      // alert('Login failed. Please try again later.');
+    }
+  };
+  
   const handleForgotPassword = () => {
     // Logic to handle forgot password
     console.log('Forgot password clicked...');
+    // Here you can make an API request to handle forgot password
   };
 
   const handleSignUp = () => {
-    navigation.navigate('SignUpScreen');
+
+    navigation.navigate('SignUp');
+    console.log('Forgot password clicked...');
   };
 
   return (
@@ -31,7 +66,10 @@ const LoginScreen = () => {
           placeholder="Email"
           placeholderTextColor="#003f5c"
           value={email}
-          onChangeText={(text) => setEmail(text)}
+          onChangeText={(text) => {
+            setEmail(text);
+            updateIsReadyForLogin(text, password);
+          }}
         />
       </View>
       <View style={styles.inputView}>
@@ -41,13 +79,19 @@ const LoginScreen = () => {
           placeholderTextColor="#003f5c"
           secureTextEntry={true}
           value={password}
-          onChangeText={(text) => setPassword(text)}
+          onChangeText={(text) => {
+            setPassword(text);
+            updateIsReadyForLogin(email, text);
+          }}
         />
       </View>
       <TouchableOpacity onPress={handleForgotPassword}>
         <Text style={styles.forgotPassword}>Forgot Password?</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.loginBtn} onPress={handleLogin}>
+      <TouchableOpacity
+        style={[styles.loginBtn, { opacity: isReadyForLogin ? 1 : 0.5 }]}
+        onPress={handleLogin}
+        disabled={!isReadyForLogin}>
         <Text style={styles.loginText}>LOGIN</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={handleSignUp}>

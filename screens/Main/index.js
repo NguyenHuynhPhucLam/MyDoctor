@@ -1,10 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, TextInput, Linking } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
+  const [topDoctors, setTopDoctors] = useState([]);
+
+  // Fetch top doctors from API
+  useEffect(() => {
+    const fetchTopDoctors = async () => {
+      try {
+        const response = await axios.get('https://hidoc-be.onrender.com/api/top-doctor-home');
+        setTopDoctors(response.data.data);
+      } catch (error) {
+        console.error('Error fetching top doctors:', error);
+      }
+    };
+    fetchTopDoctors();
+  }, []);
     const SearchBar = () => {
         return (
           <View style={styles.searchBarContainer}>
@@ -23,16 +38,14 @@ const HomeScreen = () => {
         // Logic to handle login
         navigation.navigate('DocList');
     };
+    const handleDoctorPress = (doctor) => {
+      navigation.navigate('DocAppointer', { doctor });
+  };
     const handleArticleList = () => {
       // Logic to handle login
       navigation.navigate('Articles');
   };
   // Dummy data for top doctors and health articles
-  const topDoctors = [
-    { id: 1, name: 'Dr. John Doe', speciality: 'Cardiology', rating: 4.8 },
-    { id: 2, name: 'Dr. Jane Smith', speciality: 'Dermatology', rating: 4.9 },
-    { id: 3, name: 'Dr. Mike Johnson', speciality: 'Neurology', rating: 4.7 },
-  ];
 
   const topArticles = [
     { id: 1, title: 'How to Stay Healthy', date: 'May 1, 2024' },
@@ -72,12 +85,12 @@ const HomeScreen = () => {
 
   // Render individual top doctor item
   const renderTopDoctorItem = ({ item }) => (
-    <View style={styles.topDoctorItem}>
-      <Image source={item.image} style={styles.doctorImage} />
-      <Text style={styles.doctorName}>{item.name}</Text>
-      <Text style={styles.doctorSpeciality}>{item.speciality}</Text>
-      <Text style={styles.doctorRating}>{item.rating}</Text>
-    </View>
+    <TouchableOpacity style={styles.topDoctorItem} onPress={() => handleDoctorPress({item})}>
+      <Image source={{ uri: `data:image/png;base64,${item.image?.data}` }} style={styles.doctorImage} />
+      <Text style={styles.doctorName}>{item.firstName} {item.lastName}</Text>
+      <Text style={styles.doctorSpeciality}>{item.positionId === 'P0' ? 'Cardiology' : 'Dermatology'}</Text>
+      <Text style={styles.doctorRating}>4.8</Text>
+    </TouchableOpacity>
   );
 
   return (
@@ -110,7 +123,7 @@ const HomeScreen = () => {
       </View>
       <View style={styles.banner}>
         <View style={styles.bannerText}>
-          <Text style={styles.bannerTitle}>Welcome to My App!</Text>
+          <Text style={styles.bannerTitle}>Welcome to MyDoctor!</Text>
           <TouchableOpacity style={styles.learnMoreButton}>
             <Text style={styles.learnMoreButtonText}>Learn More</Text>
           </TouchableOpacity>
@@ -161,6 +174,7 @@ const styles = {
     alignItems: 'center',
   },
   buttonText: {
+    color: 'gray',
   marginTop: 8,
   },
   banner: {

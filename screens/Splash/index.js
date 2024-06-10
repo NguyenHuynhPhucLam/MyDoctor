@@ -5,7 +5,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoginScreen from '../../screens/Login';
 
 const SplashScreen = () => {
-  const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
   const [showCarousel, setShowCarousel] = useState(false);
 
@@ -48,6 +47,7 @@ const SplashScreen = () => {
 };
 
 const GettingStartedCarousel = () => {
+  const navigation = useNavigation();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const onCarouselEnd = () => {

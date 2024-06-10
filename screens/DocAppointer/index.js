@@ -73,13 +73,13 @@ const DoctorDetailScreen = () => {
         <TouchableOpacity>
           <Image source={require('../../assets/icons/ChevronLeft.png')} style={styles.backIcon} />
         </TouchableOpacity>
-        <Text style={styles.doctorName}>{doctor.name}</Text>
+        <Text style={styles.doctorName}>{doctor.lastName} {doctor.firstName}</Text>
       </View>
       <View style={styles.doctorCard}>
         <Image source={doctor.image} style={styles.doctorImage} />
         <View style={styles.doctorInfo}>
-          <Text style={styles.doctorName}>{doctor.name}</Text>
-          <Text style={styles.doctorSpeciality}>{doctor.speciality}</Text>
+          <Text style={styles.doctorName}>{doctor.lastName}{"\n"}{doctor.firstName}</Text>
+          <Text style={styles.doctorSpeciality}>{doctor.positionId === 'P0' ? 'Cardiology' : 'Dermatology'}</Text>
           <Text style={styles.doctorRating}>Rating: {doctor.rating}</Text>
         </View>
       </View>
@@ -149,6 +149,7 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
+    backgroundColor:'#E8F3F1',
   },
   backIcon: {
     width: 24,
@@ -158,6 +159,7 @@ const styles = {
     fontSize: 18,
     fontWeight: 'bold',
     marginLeft: 16,
+    color: 'black',
   },
   doctorCard: {
     flexDirection: 'row',
@@ -174,13 +176,16 @@ const styles = {
   },
   doctorInfo: {
     marginLeft: 16,
+    color:'gray',
   },
   doctorSpeciality: {
     fontSize: 16,
     fontWeight: 'bold',
+    color:'gray',
   },
   doctorRating: {
     fontSize: 14,
+    color:'gray',
   },
   aboutDialog: {
     backgroundColor: '#f0f0f0',

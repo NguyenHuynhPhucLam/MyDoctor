@@ -5,7 +5,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LoginScreen from './screens/Login';
 import SplashScreen from './screens/Splash';
-import SignUpScreen from './screens/SignUp';
+import SignUp from './screens/SignUp';
 import HomeScreen from './screens/Main';
 import DoctorListScreen from './screens/DocList';
 import DoctorDetailScreen from './screens/DocAppointer';
@@ -82,8 +82,7 @@ const App = () => {
           name="LoginScreen"
           component={LoginScreen}
         />
-        <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
-        <Stack.Screen name="Main" component={TabNavigator}/>
+        <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name="DocList" component={DoctorListScreen} />
         <Stack.Screen name="DocAppointer" component={DoctorDetailScreen} />

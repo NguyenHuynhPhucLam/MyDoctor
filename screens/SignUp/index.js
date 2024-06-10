@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const SignUpScreen = () => {
+const SignUp = () => {
   const navigation = useNavigation();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -72,11 +72,6 @@ const SignUpScreen = () => {
         </Text>
       </TouchableOpacity>
       
-      <Modal isVisible={showNotification}> 
-        <View style={styles.notificationContainer}>
-          <Text style={styles.notificationText}>Congrats! Sign-up Success!</Text>
-        </View>
-      </Modal>
     </View>
   );
 };
@@ -131,4 +126,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUpScreen;
+export default SignUp;
